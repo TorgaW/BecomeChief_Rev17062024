@@ -10,11 +10,11 @@
 
 int main(int argc, char *argv[]) {
   SEngineApp engineApp = init_vulpecula_engine();
-  STexture *texture = load_texture(
-      "VulpeculaEngine/resources/placeholders/default128.png", &engineApp);
+  engine_load_resources(&engineApp);
+  STexture *texture = get_texture_by_name(ENGINE_DEFAULT_TEX_128_NAME, &engineApp);
   SSprite sprite = {.x = 0, .y = 0, .texture = texture};
-  for (size_t i = 0; i < 10; i++) {
-    for (size_t j = 0; j < 10; j++) {
+  for (int i = -2000; i < 2000; i++) {
+    for (int j = -2000; j < 2000; j++) {
       sprite.x = i * 128;
       sprite.y = j * 128;
       array_push_back(&sprite, engineApp.objectPool);

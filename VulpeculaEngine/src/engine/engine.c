@@ -1,8 +1,12 @@
 #include "engine.h"
 
+#include "../camera/camera.h"
+#include "../common/common.h"
 #include "../sprite/sprite.h"
 #include "../texture/texture.h"
+#include <stdint.h>
 #include <stdio.h>
+#include <string.h>
 #include <sys/types.h>
 
 SEngineApp init_vulpecula_engine() {
@@ -47,6 +51,21 @@ SEngineApp init_vulpecula_engine() {
   app.objectPool = array_create(256, sizeof(SSprite));
   app.loadedTextures = init_loaded_textures_pool();
 
+  app.framesCount = 0;
+
+  app.keyboard = alloc_struct(SKeyboard, ENGINE_MALLOC_AUTO);
+  memset(app.keyboard->keys, 0, SDL_NUM_SCANCODES);
+
+  app.camera = alloc_struct(SCamera, ENGINE_MALLOC_AUTO);
+  memset(app.camera, 0, sizeof(SCamera));
+  app.camera->zoom = 1.0;
+
+  app.mouse = alloc_struct(SMouse, ENGINE_MALLOC_AUTO);
+  memset(app.mouse, 0, sizeof(SMouse));
+
+  //nearest filter
+  SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "1");
+
   return app;
 }
 
@@ -58,6 +77,38 @@ void _read_input(SEngineApp *engineApp) {
     case SDL_QUIT: {
       engineApp->signal = ENGINE_SIGNAL_EXIT;
     } break;
+    case SDL_KEYDOWN: {
+      engineApp->keyboard->keys[event.key.keysym.scancode] = 1;
+    } break;
+    case SDL_KEYUP: {
+      engineApp->keyboard->keys[event.key.keysym.scancode] = 0;
+    } break;
+    case SDL_WINDOWEVENT_FOCUS_LOST: {
+      memset(engineApp->keyboard->keys, 0, SDL_NUM_SCANCODES);
+    } break;
+    case SDL_MOUSEBUTTONDOWN: {
+      switch (event.button.button) {
+      case SDL_BUTTON_LEFT: {
+        engineApp->mouse->buttons[0] = 1;
+      } break;
+      case SDL_BUTTON_RIGHT: {
+        engineApp->mouse->buttons[1] = 1;
+      } break;
+      }
+    } break;
+    case SDL_MOUSEBUTTONUP: {
+      switch (event.button.button) {
+      case SDL_BUTTON_LEFT: {
+        engineApp->mouse->buttons[0] = 0;
+      } break;
+      case SDL_BUTTON_RIGHT: {
+        engineApp->mouse->buttons[1] = 0;
+      } break;
+      }
+    } break;
+    case SDL_MOUSEWHEEL: {
+      engineApp->mouse->wheel = event.wheel.y;
+    } break;
     default:
       break;
     }
@@ -65,24 +116,46 @@ void _read_input(SEngineApp *engineApp) {
 }
 
 void loop_vulpecula_engine(SEngineApp *engineApp) {
+
   engineApp->signal = ENGINE_SIGNAL_RUNNING;
   size_t i = 0;
   SDL_Rect target = {.x = 0, .y = 0, .h = 128, .w = 128};
+
+  uint64_t tNow = SDL_GetPerformanceCounter();
+  uint64_t tLast = 0;
+
   while (engineApp->signal != ENGINE_SIGNAL_EXIT) {
+
+    tLast = tNow;
+    tNow = SDL_GetPerformanceCounter();
+    engineApp->framesDelta = (double)((tNow - tLast) * 1000 /
+                                      (double)SDL_GetPerformanceFrequency()) *
+                             0.001;
+    printf("%f ms\n", engineApp->framesDelta * 1000.0);
     _read_input(engineApp);
+    camera_movement(engineApp);
     SDL_RenderClear(engineApp->renderer);
+
     i = 0;
-	SSprite* current = NULL;
+    SSprite *current = NULL;
     for (; i < engineApp->objectPool->size; i++) {
-	  current = array_get_at(engineApp->objectPool, SSprite, i);
-	  target.x = current->x;
-	  target.y = current->y;
-      SDL_RenderCopy(
-          engineApp->renderer,
-          current->texture->sdlTexture,
-          NULL, &target);
+      current = array_get_at(engineApp->objectPool, SSprite, i);
+      if(current->x < engineApp->camera->x-5000 || current->x > engineApp->camera->x+5000) continue;
+      if(current->y < engineApp->camera->y-5000 || current->y > engineApp->camera->y+5000) continue;
+      target.x = current->x - engineApp->camera->x +
+                 (double)DEFAULT_WINDOW_WIDTH / 2.0 / engineApp->camera->zoom;
+      target.y = current->y - engineApp->camera->y +
+                 (double)DEFAULT_WINDOW_HEIGHT / 2.0 / engineApp->camera->zoom;
+
+      SDL_RenderSetScale(engineApp->renderer, engineApp->camera->zoom,
+                         engineApp->camera->zoom);
+      SDL_RenderCopy(engineApp->renderer, current->texture->sdlTexture, NULL,
+                     &target);
     }
+
     SDL_RenderPresent(engineApp->renderer);
+    engineApp->framesCount++;
+    engineApp->mouse->wheel = 0;
   }
   free_vulpecula_engine(engineApp);
 }
@@ -92,4 +165,10 @@ void free_vulpecula_engine(SEngineApp *engineApp) {
   SDL_DestroyWindow(engineApp->window);
   IMG_Quit();
   array_free(engineApp->objectPool);
+}
+
+void engine_load_resources(SEngineApp *engineApp) {
+  // load default placeholder 128x128. id = 1
+  load_texture("VulpeculaEngine/resources/placeholders/default128.png",
+               "DefaultTex128", engineApp);
 }

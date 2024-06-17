@@ -13,10 +13,13 @@ typedef struct SLoadedTexturesPool
 	SArray* textures;
 } SLoadedTexturesPool;
 
+#define TEX_MAX_NAME_LEN 32
+
 typedef struct STexture 
 {	
 	uint32_t id;
 	SDL_Texture* sdlTexture;
+	char name[TEX_MAX_NAME_LEN+1];
 } STexture;
 
 #endif /* TEXTURE_DEFS */
