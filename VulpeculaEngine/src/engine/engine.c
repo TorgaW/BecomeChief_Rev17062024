@@ -1,5 +1,10 @@
 #include "engine.h"
 
+#include "../sprite/sprite.h"
+#include "../texture/texture.h"
+#include <stdio.h>
+#include <sys/types.h>
+
 SEngineApp init_vulpecula_engine() {
   int rendererFlags, windowFlags;
   rendererFlags = SDL_RENDERER_ACCELERATED;
@@ -13,7 +18,7 @@ SEngineApp init_vulpecula_engine() {
   }
 
   if (IMG_Init(IMG_INIT_JPG | IMG_INIT_PNG) <= 0) {
-    printf("Couldn't initialize SDL_Image: %s\n", SDL_GetError());
+    printf("Couldn't initialize SDL_Image: %s\n", IMG_GetError());
     exit(1);
   }
 
@@ -39,6 +44,9 @@ SEngineApp init_vulpecula_engine() {
 
   app.signal = ENGINE_SIGNAL_IDLE;
 
+  app.objectPool = array_create(256, sizeof(SSprite));
+  app.loadedTextures = init_loaded_textures_pool();
+
   return app;
 }
 
@@ -58,8 +66,23 @@ void _read_input(SEngineApp *engineApp) {
 
 void loop_vulpecula_engine(SEngineApp *engineApp) {
   engineApp->signal = ENGINE_SIGNAL_RUNNING;
+  size_t i = 0;
+  SDL_Rect target = {.x = 0, .y = 0, .h = 128, .w = 128};
   while (engineApp->signal != ENGINE_SIGNAL_EXIT) {
     _read_input(engineApp);
+    SDL_RenderClear(engineApp->renderer);
+    i = 0;
+	SSprite* current = NULL;
+    for (; i < engineApp->objectPool->size; i++) {
+	  current = array_get_at(engineApp->objectPool, SSprite, i);
+	  target.x = current->x;
+	  target.y = current->y;
+      SDL_RenderCopy(
+          engineApp->renderer,
+          current->texture->sdlTexture,
+          NULL, &target);
+    }
+    SDL_RenderPresent(engineApp->renderer);
   }
   free_vulpecula_engine(engineApp);
 }
@@ -68,4 +91,5 @@ void free_vulpecula_engine(SEngineApp *engineApp) {
   SDL_DestroyRenderer(engineApp->renderer);
   SDL_DestroyWindow(engineApp->window);
   IMG_Quit();
+  array_free(engineApp->objectPool);
 }

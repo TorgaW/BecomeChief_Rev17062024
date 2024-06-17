@@ -1,11 +1,11 @@
 #ifndef TEXTURE
 #define TEXTURE
 
-#include <SDL2/SDL_render.h>
-#include <SDL2/SDL_image.h>
+#include "../engine/engine_defs.h"
 
-#include "../engine/engine.h"
+SLoadedTexturesPool* init_loaded_textures_pool();
+void free_loaded_textures_pool(SLoadedTexturesPool* pool);
 
-SDL_Texture* load_texture(char* file, SEngineApp* engineApp);
+STexture* load_texture(char* file, SEngineApp* engineApp);
 
 #endif /* TEXTURE */

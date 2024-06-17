@@ -17,6 +17,10 @@ SArray* array_create(size_t capacity, size_t dataTypeSize);
 void array_push_back(void* data, SArray* array);
 void array_push_back_mul(void* data, size_t dataCount, SArray* array);
 
+#define array_get_at(array, type, index) (((type*)array->data) + index)
+
+void array_free(SArray* array);
+
 bool _array_realloc_data(SArray* array);
 
 #endif /* DARRAY */

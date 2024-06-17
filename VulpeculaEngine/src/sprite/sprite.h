@@ -2,10 +2,11 @@
 #define SPRITE
 
 #include <SDL2/SDL_render.h>
+#include "../texture/texture_defs.h"
 
 typedef struct SSprite {
 	int x, y;
-	SDL_Texture* texture;
+	STexture* texture;
 } SSprite;
 
 #endif /* SPRITE */

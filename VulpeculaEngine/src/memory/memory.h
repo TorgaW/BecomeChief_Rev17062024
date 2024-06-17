@@ -14,4 +14,6 @@ typedef struct SMemPool
 
 void* engine_malloc(size_t num, int strategy);
 
+// void engine_free(size_t num, int strategy);
+
 #endif /* MEMORY */
