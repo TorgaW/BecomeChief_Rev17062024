@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.21)
-set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -std=c23")
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -std=c23 -O3")
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 project(BecomeChiefRev17062024)
