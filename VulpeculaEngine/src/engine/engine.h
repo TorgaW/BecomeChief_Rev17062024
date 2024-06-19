@@ -10,8 +10,8 @@
 #define ENGINE_SIGNAL_RUNNING 1
 #define ENGINE_SIGNAL_EXIT 2
 
-#define ENGINE_DEFAULT_TEX_128 1
-#define ENGINE_DEFAULT_TEX_128_NAME "DefaultTex128"
+#define ENGINE_DEFAULT_TEX_0_128 1
+#define ENGINE_DEFAULT_TEX_0_128_NAME "DefaultTex128"
 
 SEngineApp init_vulpecula_engine();
 

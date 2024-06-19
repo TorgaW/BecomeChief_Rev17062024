@@ -118,8 +118,6 @@ void _read_input(SEngineApp *engineApp) {
 void loop_vulpecula_engine(SEngineApp *engineApp) {
 
   engineApp->signal = ENGINE_SIGNAL_RUNNING;
-  size_t i = 0;
-  SDL_Rect target = {.x = 0, .y = 0, .h = 128, .w = 128};
 
   uint64_t tNow = SDL_GetPerformanceCounter();
   uint64_t tLast = 0;
@@ -136,22 +134,7 @@ void loop_vulpecula_engine(SEngineApp *engineApp) {
     camera_movement(engineApp);
     SDL_RenderClear(engineApp->renderer);
 
-    i = 0;
-    SSprite *current = NULL;
-    for (; i < engineApp->objectPool->size; i++) {
-      current = array_get_at(engineApp->objectPool, SSprite, i);
-      if(current->x < engineApp->camera->x-5000 || current->x > engineApp->camera->x+5000) continue;
-      if(current->y < engineApp->camera->y-5000 || current->y > engineApp->camera->y+5000) continue;
-      target.x = current->x - engineApp->camera->x +
-                 (double)DEFAULT_WINDOW_WIDTH / 2.0 / engineApp->camera->zoom;
-      target.y = current->y - engineApp->camera->y +
-                 (double)DEFAULT_WINDOW_HEIGHT / 2.0 / engineApp->camera->zoom;
-
-      SDL_RenderSetScale(engineApp->renderer, engineApp->camera->zoom,
-                         engineApp->camera->zoom);
-      SDL_RenderCopy(engineApp->renderer, current->texture->sdlTexture, NULL,
-                     &target);
-    }
+    engineApp->tickFunction(engineApp);
 
     SDL_RenderPresent(engineApp->renderer);
     engineApp->framesCount++;

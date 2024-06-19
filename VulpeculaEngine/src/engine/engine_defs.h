@@ -22,6 +22,7 @@ typedef struct SEngineApp {
   SKeyboard* keyboard;
   SCamera* camera;
   SMouse* mouse;
+  void (*tickFunction)(struct SEngineApp* engineApp);
 } SEngineApp;
 
 #endif /* ENGINE_DEFS */
