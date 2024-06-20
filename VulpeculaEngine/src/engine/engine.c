@@ -129,7 +129,7 @@ void loop_vulpecula_engine(SEngineApp *engineApp) {
     engineApp->framesDelta = (double)((tNow - tLast) * 1000 /
                                       (double)SDL_GetPerformanceFrequency()) *
                              0.001;
-    printf("%f ms\n", engineApp->framesDelta * 1000.0);
+    printf("%f ms; %.4f fps;\n", engineApp->framesDelta * 1000.0, 1000.0 / (engineApp->framesDelta * 1000.0));
     _read_input(engineApp);
     camera_movement(engineApp);
     SDL_RenderClear(engineApp->renderer);
@@ -152,6 +152,6 @@ void free_vulpecula_engine(SEngineApp *engineApp) {
 
 void engine_load_resources(SEngineApp *engineApp) {
   // load default placeholder 128x128. id = 1
-  load_texture("VulpeculaEngine/resources/placeholders/default128.png",
+  load_texture("VulpeculaEngine/resources/placeholders/default128_0.png",
                "DefaultTex128", engineApp);
 }

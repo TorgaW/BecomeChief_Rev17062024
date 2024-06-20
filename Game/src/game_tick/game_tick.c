@@ -16,13 +16,13 @@ void game_tick(SEngineApp *engineApp) {
                      engineApp->camera->zoom);
   int cx = 0;
   int cy = 0;
-  for (int i = -100; i < 100; i++) {
-    for (int j = -100; j < 100; j++) {
+  for (int i = -1000; i < 1000; i++) {
+    for (int j = -1000; j < 1000; j++) {
       cx = i * 128;
       cy = j * 128;
-      if (cx < engineApp->camera->x - 2000 || cx > engineApp->camera->x + 2000)
+      if (cx < engineApp->camera->x - ((double)DEFAULT_WINDOW_WIDTH*2+128) || cx > engineApp->camera->x + ((double)DEFAULT_WINDOW_WIDTH*2+128))
         continue;
-      if (cy < engineApp->camera->y - 2000 || cy > engineApp->camera->y + 2000)
+      if (cy < engineApp->camera->y - ((double)DEFAULT_WINDOW_HEIGHT*2+128) || cy > engineApp->camera->y + ((double)DEFAULT_WINDOW_HEIGHT*2+128))
         continue;
       target.x = cx - engineApp->camera->x +
                  (double)DEFAULT_WINDOW_WIDTH / 2.0 / engineApp->camera->zoom;
