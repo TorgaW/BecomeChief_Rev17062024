@@ -4,6 +4,8 @@
 #include "engine/engine.h"
 #include "sprite/sprite.h"
 
+#include "math/frandom.h"
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <sys/types.h>
@@ -16,8 +18,8 @@ void game_tick(SEngineApp *engineApp) {
                      engineApp->camera->zoom);
   int cx = 0;
   int cy = 0;
-  for (int i = -1000; i < 1000; i++) {
-    for (int j = -1000; j < 1000; j++) {
+  for (int i = -3000; i < 3000; i++) {
+    for (int j = -3000; j < 3000; j++) {
       cx = i * 128;
       cy = j * 128;
       if (cx < engineApp->camera->x - ((double)DEFAULT_WINDOW_WIDTH*2+128) || cx > engineApp->camera->x + ((double)DEFAULT_WINDOW_WIDTH*2+128))
