@@ -18,21 +18,21 @@ void game_tick(SEngineApp *engineApp) {
                      engineApp->camera->zoom);
   int cx = 0;
   int cy = 0;
-  for (int i = -3000; i < 3000; i++) {
-    for (int j = -3000; j < 3000; j++) {
-      cx = i * 128;
-      cy = j * 128;
-      if (cx < engineApp->camera->x - ((double)DEFAULT_WINDOW_WIDTH*2+128) || cx > engineApp->camera->x + ((double)DEFAULT_WINDOW_WIDTH*2+128))
-        continue;
-      if (cy < engineApp->camera->y - ((double)DEFAULT_WINDOW_HEIGHT*2+128) || cy > engineApp->camera->y + ((double)DEFAULT_WINDOW_HEIGHT*2+128))
-        continue;
-      target.x = cx - engineApp->camera->x +
-                 (double)DEFAULT_WINDOW_WIDTH / 2.0 / engineApp->camera->zoom;
-      target.y = cy - engineApp->camera->y +
-                 (double)DEFAULT_WINDOW_HEIGHT / 2.0 / engineApp->camera->zoom;
-      // printf("x: %d, y: %d\n", i*128, j*128);
-      SDL_RenderCopy(engineApp->renderer, current->texture->sdlTexture, NULL,
-                     &target);
-    }
-  }
+  // for (int i = -3000; i < 3000; i++) {
+  //   for (int j = -3000; j < 3000; j++) {
+  //     cx = i * 128;
+  //     cy = j * 128;
+  //     if (cx < engineApp->camera->x - ((double)DEFAULT_WINDOW_WIDTH*2+128) || cx > engineApp->camera->x + ((double)DEFAULT_WINDOW_WIDTH*2+128))
+  //       continue;
+  //     if (cy < engineApp->camera->y - ((double)DEFAULT_WINDOW_HEIGHT*2+128) || cy > engineApp->camera->y + ((double)DEFAULT_WINDOW_HEIGHT*2+128))
+  //       continue;
+  //     target.x = cx - engineApp->camera->x +
+  //                (double)DEFAULT_WINDOW_WIDTH / 2.0 / engineApp->camera->zoom;
+  //     target.y = cy - engineApp->camera->y +
+  //                (double)DEFAULT_WINDOW_HEIGHT / 2.0 / engineApp->camera->zoom;
+  //     // printf("x: %d, y: %d\n", i*128, j*128);
+  //     SDL_RenderCopy(engineApp->renderer, current->texture->sdlTexture, NULL,
+  //                    &target);
+  //   }
+  // }
 }
