@@ -10,6 +10,7 @@
 #include "../mouse/mouse.h"
 #include "../texture/texture_defs.h"
 #include "../camera/camera_defs.h"
+#include "SDL_render.h"
 
 typedef struct SEngineApp {
   SDL_Renderer *renderer;
@@ -23,6 +24,7 @@ typedef struct SEngineApp {
   SCamera* camera;
   SMouse* mouse;
   void (*tickFunction)(struct SEngineApp* engineApp);
+  SDL_Texture* testNoise;
 } SEngineApp;
 
 #endif /* ENGINE_DEFS */

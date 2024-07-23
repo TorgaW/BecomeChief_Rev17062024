@@ -4,14 +4,17 @@
 #include "../common/common.h"
 #include "../sprite/sprite.h"
 #include "../texture/texture.h"
+#include "SDL_render.h"
+#include "SDL_stdinc.h"
 #include <stdint.h>
 #include <stdio.h>
 #include <string.h>
 #include <sys/types.h>
+#include <time.h>
 
 SEngineApp init_vulpecula_engine() {
   int rendererFlags, windowFlags;
-  rendererFlags = SDL_RENDERER_ACCELERATED;
+  rendererFlags = SDL_RENDERER_ACCELERATED | SDL_RENDERER_TARGETTEXTURE;
   windowFlags = 0;
 
   SEngineApp app;
@@ -20,6 +23,9 @@ SEngineApp init_vulpecula_engine() {
     printf("Couldn't initialize SDL: %s\n", SDL_GetError());
     exit(1);
   }
+  SDL_bool resHint = SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "0");
+  // SDL_SetHint(SDL_HINT_VIDEO_X11_XRANDR, "0");
+  printf("hint result: %s\n", resHint == 1 ? "true" : "false");
 
   if (IMG_Init(IMG_INIT_JPG | IMG_INIT_PNG) <= 0) {
     printf("Couldn't initialize SDL_Image: %s\n", IMG_GetError());
@@ -37,14 +43,16 @@ SEngineApp init_vulpecula_engine() {
     exit(1);
   }
 
-  SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "linear");
-
   app.renderer = SDL_CreateRenderer(app.window, -1, rendererFlags);
 
   if (!app.renderer) {
     printf("Failed to create renderer: %s\n", SDL_GetError());
     exit(1);
   }
+
+  SDL_RendererInfo info;
+  SDL_GetRendererInfo(app.renderer, &info);
+  SDL_Log("Renderer: %s", info.name);
 
   app.signal = ENGINE_SIGNAL_IDLE;
 
@@ -63,7 +71,9 @@ SEngineApp init_vulpecula_engine() {
   app.mouse = alloc_struct(SMouse, ENGINE_MALLOC_AUTO);
   memset(app.mouse, 0, sizeof(SMouse));
 
-  //nearest filter
+  app.testNoise = NULL;
+
+  // nearest filter
   SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "1");
 
   return app;
@@ -129,7 +139,8 @@ void loop_vulpecula_engine(SEngineApp *engineApp) {
     engineApp->framesDelta = (double)((tNow - tLast) * 1000 /
                                       (double)SDL_GetPerformanceFrequency()) *
                              0.001;
-    // printf("%f ms; %.4f fps;\n", engineApp->framesDelta * 1000.0, 1000.0 / (engineApp->framesDelta * 1000.0));
+    // printf("%f ms; %.4f fps;\n", engineApp->framesDelta * 1000.0, 1000.0 /
+    // (engineApp->framesDelta * 1000.0));
     _read_input(engineApp);
     camera_movement(engineApp);
     SDL_RenderClear(engineApp->renderer);
@@ -152,6 +163,6 @@ void free_vulpecula_engine(SEngineApp *engineApp) {
 
 void engine_load_resources(SEngineApp *engineApp) {
   // load default placeholder 128x128. id = 1
-  load_texture("VulpeculaEngine/resources/placeholders/default128_0.png",
+  load_texture("VulpeculaEngine/resources/placeholders/default128.png",
                "DefaultTex128", engineApp);
 }

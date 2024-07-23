@@ -3,7 +3,7 @@
 
 #include <stdint.h>
 #include <sys/types.h>
-#define NOISE_SIMPLEX 0
+#define NOISE_PERLIN 0
 
 typedef struct SNoise {
 	int noiseType;

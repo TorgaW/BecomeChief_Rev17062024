@@ -1,4 +1,5 @@
 #include "frandom.h"
+#include <stdio.h>
 
 uint64_t get_fast_random_value(SMathRandomState *state) {
   state->v = (state->seed + 73) * (state->v & 0xFFFFFFFF) + (state->v >> 32);
