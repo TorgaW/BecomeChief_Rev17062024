@@ -2,6 +2,9 @@
 #define FMATH
 
 #include <stdint.h>
+
+#define FMATH_PI 3.14159265358979323846
+
 double fm_clamp(double d, double min, double max);
 float fm_clamp_f(float d, float min, float max);
 

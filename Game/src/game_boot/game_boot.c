@@ -1,8 +1,10 @@
 #include "game_boot.h"
 #include "../game_tick/game_tick.h"
 
+#include <SDL2/SDL.h>
 #include "SDL_pixels.h"
 #include "SDL_render.h"
+#include "benchmark/time_benchmark.h"
 #include "math/frandom.h"
 #include "math/noise/noise.h"
 #include "math/noise/perlin/perlin.h"
@@ -22,15 +24,19 @@ void game_boot() {
   engineApp.tickFunction = &game_tick;
 
   SNoise noise = {.noiseType = NOISE_PERLIN};
-  alloc_noise(&noise, 128, 128);
+  alloc_noise(&noise, 1024, 1024);
   SMathRandomState rState = {.seed = 0xFFFF};
-  int w = 128, h = 128;
+  gen_perlin_random_values(&noise, &rState);
+
+  BC_START_BENCHMARK
+  int w = 1024, h = 1024;
   for (int i = 0; i < h; i++) {
     for (int j = 0; j < w; j++) {
-      noise.data[i*h + j] = calc_perlin_2d((j)*0.0001f, (i)*0.0001f, &rState);
-      // printf("value: %f", noise.data[i*h+j]);
+      noise.data[i*h + j] = calc_perlin_2d((j)*0.01f+0.005f, (i)*0.01f+0.005f, &noise) * 0.5f + 0.5f;
     }
   }
+  BC_STOP_BENCHMARK
+  BC_PRINT_RESULTS_BENCHMARK
 
   SDL_Texture* noiseTexture = SDL_CreateTexture(engineApp.renderer, SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_STREAMING, w, h);
   SDL_SetTextureScaleMode(noiseTexture, SDL_ScaleModeNearest);

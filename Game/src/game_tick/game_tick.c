@@ -13,7 +13,7 @@
 #include <time.h>
 
 void game_tick(SEngineApp *engineApp) {
-  SDL_Rect target = {.x = 0, .y = 0, .h = 128, .w = 128};
+  SDL_Rect target = {.x = 0, .y = 0, .h = 1024, .w = 1024};
   SSprite *current = array_get_at(engineApp->objectPool, SSprite, 0);
   // SDL_ScaleMode mode;
   // SDL_GetTextureScaleMode(engineApp->testNoise, &mode);
@@ -27,9 +27,9 @@ void game_tick(SEngineApp *engineApp) {
     for (int j = 0; j < 1; j++) {
       // cx = i * 16;
       // cy = j * 16;
-      if (cx < engineApp->camera->x - ((float)DEFAULT_WINDOW_WIDTH*2+128) || cx > engineApp->camera->x + ((float)DEFAULT_WINDOW_WIDTH*2+128))
+      if (cx < engineApp->camera->x - ((float)DEFAULT_WINDOW_WIDTH*2+1024) || cx > engineApp->camera->x + ((float)DEFAULT_WINDOW_WIDTH*2+1024))
         continue;
-      if (cy < engineApp->camera->y - ((float)DEFAULT_WINDOW_HEIGHT*2+128) || cy > engineApp->camera->y + ((float)DEFAULT_WINDOW_HEIGHT*2+128))
+      if (cy < engineApp->camera->y - ((float)DEFAULT_WINDOW_HEIGHT*2+1024) || cy > engineApp->camera->y + ((float)DEFAULT_WINDOW_HEIGHT*2+1024))
         continue;
       target.x = cx - engineApp->camera->x +
                  (float)DEFAULT_WINDOW_WIDTH / 2.0 / engineApp->camera->zoom;
