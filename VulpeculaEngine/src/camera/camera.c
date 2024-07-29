@@ -15,8 +15,8 @@ void camera_movement(SEngineApp *engineApp) {
     engineApp->camera->x += CAMERA_SPEED / engineApp->camera->zoom * engineApp->framesDelta;
   }
   if (engineApp->mouse->wheel < 0) {
-    engineApp->camera->zoom = fm_clamp(engineApp->camera->zoom - 0.05, 0.25, 1.75);
+    engineApp->camera->zoom = fm_clamp(engineApp->camera->zoom - 0.05, 0.25, 3.0);
   } else if (engineApp->mouse->wheel > 0) {
-    engineApp->camera->zoom = fm_clamp(engineApp->camera->zoom + 0.05, 0.25, 1.75);
+    engineApp->camera->zoom = fm_clamp(engineApp->camera->zoom + 0.05, 0.25, 3.0);
   }
 }

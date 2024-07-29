@@ -165,4 +165,8 @@ void engine_load_resources(SEngineApp *engineApp) {
   // load default placeholder 128x128. id = 1
   load_texture("VulpeculaEngine/resources/placeholders/default128.png",
                "DefaultTex128", engineApp);
+  load_texture("Game/resources/world/terrain/grass_tile.png", "GrassTerrain",
+               engineApp);
+  load_texture("Game/resources/world/terrain/stone_tile.png", "StoneTerrain",
+               engineApp);
 }
