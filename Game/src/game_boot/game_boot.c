@@ -39,12 +39,10 @@ void game_boot() {
   int w = 512, h = 512;
   for (int i = 0; i < h; i++) {
     for (int j = 0; j < w; j++) {
-      noise.data[i * h + j] = calc_perlin_dwfbm_ridged_2d(
-          (j) * 0.005f + 0.005f, (i) * 0.005f + 0.005f, 4, &fbmParams,
-          &dwParams, &noise);
-      noise.data[i * h + j] =
-          fm_clamp_f(noise.data[i * h + j] * 1.2f,
-                     0.0f, 0.9999f);
+      noise.data[i * h + j] = fm_clamp_f(
+          calc_perlin_dwfbm_2d((j) * 0.05f + 0.05f, (i) * 0.05f + 0.05f, 7,
+                               &fbmParams, &dwParams, &noise),
+          0.0f, 0.9999f);
     }
   }
   BC_STOP_BENCHMARK
