@@ -30,6 +30,10 @@ typedef struct SVec3i {
 	int x, y, z;
 } SVec3i;
 
+typedef struct SVec4i {
+	int x, y, z, w;
+} SVec4i;
+
 typedef struct SColorRGBA {
 	uint8_t r, g, b, a;
 } SColorRGBA;

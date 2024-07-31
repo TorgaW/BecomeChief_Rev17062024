@@ -5,6 +5,7 @@
 #include "darray/darray.h"
 #include "engine/engine.h"
 #include "gui/layout/layout.h"
+#include "gui/tick/tick.h"
 #include "gui/widget/widget.h"
 #include "sprite/sprite.h"
 
@@ -19,27 +20,23 @@ void game_tick(SEngineApp *engineApp) {
 
   /********* RENDERING UI LAYER */
 
-  int windowWidth, windowHeight;
-  SDL_GetWindowSizeInPixels(engineApp->window, &windowWidth, &windowHeight);
+  ui_tick(engineApp, *array_get_at(engineApp->uiPool, SUILayout *, 0));
 
-  SUILayout *currentLayout = NULL;
-  SUIWidget *currentWidget = NULL;
+  // int windowWidth, windowHeight;
+  // SDL_GetWindowSizeInPixels(engineApp->window, &windowWidth, &windowHeight);
 
-  if (engineApp->framesCount % 2 == 0) {
-    currentLayout = *array_get_at(engineApp->uiPool, SUILayout *, 0);
-    currentWidget = array_get_at(currentLayout->widgets, SUIWidget, 0);
-  } else {
-    currentLayout = *array_get_at(engineApp->uiPool, SUILayout *, 1);
-    currentWidget = array_get_at(currentLayout->widgets, SUIWidget, 0);
-  }
+  // SUILayout *currentLayout = NULL;
+  // SUIWidget *currentWidget = NULL;
+  // currentLayout = *array_get_at(engineApp->uiPool, SUILayout *, 0);
+  // currentWidget = array_get_at(currentLayout->widgets, SUIWidget, 0);
 
-  currentWidget->_renderRectangle.h = windowHeight;
-  currentWidget->_renderRectangle.w = windowWidth;
+  // currentWidget->_renderRectangle.h = windowHeight;
+  // currentWidget->_renderRectangle.w = windowWidth;
 
-  SDL_SetRenderDrawColor(engineApp->renderer, currentWidget->color.r,
-                         currentWidget->color.g, currentWidget->color.b,
-                         currentWidget->color.a);
-  SDL_RenderDrawRect(engineApp->renderer, &currentWidget->_renderRectangle);
+  // SDL_SetRenderDrawColor(engineApp->renderer, currentWidget->color.r,
+  //                        currentWidget->color.g, currentWidget->color.b,
+  //                        currentWidget->color.a);
+  // SDL_RenderDrawRect(engineApp->renderer, &currentWidget->_renderRectangle);
 
   /********* RENDERING GAME LAYER */
 

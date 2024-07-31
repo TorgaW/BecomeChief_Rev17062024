@@ -6,7 +6,7 @@
 SUILayout* ui_create_layout(int zOrder)
 {
 	SUILayout* layout = engine_malloc(sizeof(SUILayout), ENGINE_MALLOC_AUTO);
-	layout->widgets = array_create(32, sizeof(SUIWidget));
+	layout->widgets = array_create(32, sizeof(SUIWidget*));
 	layout->zOrder = zOrder;
 	return layout;
 }
