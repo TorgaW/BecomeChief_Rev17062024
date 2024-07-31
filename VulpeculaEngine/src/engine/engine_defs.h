@@ -17,6 +17,7 @@ typedef struct SEngineApp {
   SDL_Window *window;
   int signal;
   SArray *objectPool;
+  SArray *uiPool;
   SLoadedTexturesPool *loadedTextures;
   size_t framesCount;
   double framesDelta;

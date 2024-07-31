@@ -6,6 +6,9 @@
 #include "../texture/texture.h"
 #include "SDL_render.h"
 #include "SDL_stdinc.h"
+#include "darray/darray.h"
+#include "gui/layout/layout.h"
+#include "gui/widget/widget.h"
 #include <stdint.h>
 #include <stdio.h>
 #include <string.h>
@@ -57,6 +60,7 @@ SEngineApp init_vulpecula_engine() {
   app.signal = ENGINE_SIGNAL_IDLE;
 
   app.objectPool = array_create(256, sizeof(SSprite));
+  app.uiPool = array_create(32, sizeof(SUILayout*));
   app.loadedTextures = init_loaded_textures_pool();
 
   app.framesCount = 0;
@@ -144,9 +148,11 @@ void loop_vulpecula_engine(SEngineApp *engineApp) {
     _read_input(engineApp);
     camera_movement(engineApp);
     SDL_RenderClear(engineApp->renderer);
+    // SDL_SetRenderDrawColor(engineApp->renderer, 0, 0, 0, 0);
 
     engineApp->tickFunction(engineApp);
 
+    SDL_SetRenderDrawColor(engineApp->renderer, 0, 0, 0, 0);
     SDL_RenderPresent(engineApp->renderer);
     engineApp->framesCount++;
     engineApp->mouse->wheel = 0;

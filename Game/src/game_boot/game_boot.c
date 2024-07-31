@@ -6,6 +6,8 @@
 #include "benchmark/time_benchmark.h"
 #include "darray/darray.h"
 #include "engine/engine.h"
+#include "gui/layout/layout.h"
+#include "gui/widget/widget.h"
 #include "math/fmath.h"
 #include "math/frandom.h"
 #include "math/noise/noise.h"
@@ -24,69 +26,27 @@ void game_boot() {
 
   engineApp.tickFunction = &game_tick;
 
-  SNoise noise = {.noiseType = NOISE_PERLIN};
-  alloc_noise(&noise, 512, 512);
-  SMathRandomState rState = {.seed = 0xFFFF};
-  gen_perlin_random_values(&noise, &rState);
-  SPerlinFBMParams fbmParams;
-  init_perlin_fbm_params(&fbmParams);
-  fbmParams.lake = 1.5f;
-  SPerlinDomainWarpingParams dwParams;
-  init_perlin_domain_warping_params(&dwParams);
-  dwParams.p = 1.2f;
+  SUILayout* layout0 = ui_create_layout(0);
+  array_push_back(&layout0, engineApp.uiPool);
 
-  BC_START_BENCHMARK
-  int w = 512, h = 512;
-  for (int i = 0; i < h; i++) {
-    for (int j = 0; j < w; j++) {
-      noise.data[i * h + j] = fm_clamp_f(
-          calc_perlin_dwfbm_2d((j) * 0.05f + 0.05f, (i) * 0.05f + 0.05f, 7,
-                               &fbmParams, &dwParams, &noise),
-          0.0f, 0.9999f);
-    }
-  }
-  BC_STOP_BENCHMARK
-  BC_PRINT_RESULTS_BENCHMARK
+  SUILayout* layout1 = ui_create_layout(0);
+  array_push_back(&layout1, engineApp.uiPool);
 
-  SDL_Texture *noiseTexture =
-      SDL_CreateTexture(engineApp.renderer, SDL_PIXELFORMAT_RGBA8888,
-                        SDL_TEXTUREACCESS_STREAMING, w, h);
-  SDL_SetTextureScaleMode(noiseTexture, SDL_ScaleModeNearest);
-  uint32_t pixels[w * h];
-  // int pitch = 0;
-  SDL_PixelFormat *formatPix = SDL_AllocFormat(SDL_PIXELFORMAT_RGBA8888);
+  SVec2f w_pos = {.x = 0, .y = 0};
+  SVec2f w_max_size = {.x = 0, .y = 0};
+  SUIWidget* widget0 = ui_create_widget(0, WIDGET_TYPE_CONTAINER, w_pos, w_max_size, NULL);
+  widget0->color.r = 255u;
+  widget0->color.g = 0u;
+  widget0->color.b = 0u;
 
-  for (int i = 0; i < w * h; i++) {
-    pixels[i] = SDL_MapRGBA(formatPix, (uint8_t)(255 * noise.data[i]),
-                            (uint8_t)(256 * noise.data[i]),
-                            (uint8_t)(256 * noise.data[i]), 255);
-    // printf("uvalue: %u\n nvalue: %f", (uint8_t)(noise.data[i]*255),
-    // noise.data[i]);
-  }
+  array_push_back(widget0, layout0->widgets);
 
-  SDL_UpdateTexture(noiseTexture, NULL, pixels, sizeof(uint32_t) * w);
-  // SDL_LockTexture(noiseTexture, NULL, (void**)&pixels, &pitch);
-  // printf("%d\n", pitch);
-  // int c = 0;
-  // int t = 0;
-  // for (int i = 0; i < 16 * 16; i++) {
-  //   if(c==1)
-  //   {
-  //     pixels[i] = 255;
-  //     c = 0;
-  //     t++;
-  //   }
-  //   else
-  //   {
-  //     pixels[i] = (uint8_t)(noise.data[t] * 255.0f);
-  //     c++;
-  //   }
-  // }
-  // SDL_UnlockTexture(noiseTexture);
-  engineApp.testNoise = noiseTexture;
+  widget0->color.r = 0u;
+  widget0->color.g = 255u;
 
-  STexture *texture = get_texture(ENGINE_DEFAULT_TEX_0_128, &engineApp);
-  SSprite sprite = {.x = 0, .y = 0, .texture = texture};
-  array_push_back(&sprite, engineApp.objectPool);
+  array_push_back(widget0, layout1->widgets);
+
+  free(widget0);
+
   loop_vulpecula_engine(&engineApp);
 }

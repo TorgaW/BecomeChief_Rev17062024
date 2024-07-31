@@ -3,7 +3,7 @@
 ## Public structs:
 
 ### SPerlinFBMParams
-```
+```cpp
 typedef struct SPerlinFBMParams {
 
     float gain;
@@ -21,7 +21,7 @@ Will init **src** struct with default values. **src** must not be ```NULL```.
 
 ---
 ### SPerlinDomainWarpingParams
-```
+```cpp
 typedef struct SPerlinDomainWarpingParams {
 
     float vx0, vy0, vx1, vy1, vx2, vy2, vx3, vy3;
@@ -83,7 +83,7 @@ Same as ```float calc_perlin_dwfbm_2d(...)``` but applies _Ridged_ filter at the
 ---
 
 ## Examples
-```c
+```cpp
 //create SNoise struct
 SNoise noise = {.noiseType = NOISE_PERLIN};
 alloc_noise(&noise, 512, 512);
