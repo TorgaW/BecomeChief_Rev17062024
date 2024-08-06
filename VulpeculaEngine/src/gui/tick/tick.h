@@ -13,11 +13,15 @@
 void ui_tick(SEngineApp* engineApp, SUILayout* target);
 void _dfs_widgets(SUIWidget* root, SEngineApp *engineApp);
 
+void _block_align_container(SUIWidget* src);
+
+
+
 void ui_render(SEngineApp *engineApp, SUILayout *target);
 void _dfs_widgets_render(SUIWidget* root, SEngineApp *engineApp);
 
 
-void _block_align_container(SUIWidget* src);
 
+void _hit_test(SEngineApp* engineApp, SUILayout* target);
 
 #endif /* TICK */

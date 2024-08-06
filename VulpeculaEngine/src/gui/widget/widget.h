@@ -34,6 +34,6 @@ typedef struct SUIWidget {
 	SStyle* style;
 } SUIWidget;
 
-SUIWidget* ui_create_widget(int hitTest, EUIWidgetType type, SVec2i position, SVec2i maxSize, SUIWidget* parent);
+SUIWidget* ui_create_widget(int hitTest, EUIWidgetType type, SStyle* style, SUIWidget* parent);
 
 #endif /* WIDGET */

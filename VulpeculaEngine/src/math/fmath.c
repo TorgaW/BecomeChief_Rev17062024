@@ -16,3 +16,9 @@ int32_t fm_floor_f(float x) { return (int32_t)x - (x < (int32_t)x); }
 
 double fm_lerp(double x, double y, double t) { return x + t * (y - x); }
 float fm_lerp_f(float x, float y, float t) { return x + t * (y - x); }
+
+SVec2i fmath_zero_vec2i()
+{
+  SVec2i t = {.x = 0, .y = 0};
+  return t;
+}

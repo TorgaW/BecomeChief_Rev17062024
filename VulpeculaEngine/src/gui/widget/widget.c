@@ -3,38 +3,37 @@
 #include "SDL_rect.h"
 #include "darray/darray.h"
 #include "gui/style/style.h"
+#include "math/fmath.h"
 #include "memory/memory.h"
 
-SUIWidget* ui_create_widget(int hitTest, EUIWidgetType type, SVec2i position, SVec2i maxSize, SUIWidget* parent)
-{
-	SUIWidget* widget = engine_malloc(sizeof(SUIWidget), ENGINE_MALLOC_AUTO);
-	widget->isHitTestable = hitTest;
-	widget->visible = 1;
-	widget->type = type;
-	widget->size.x = 0;
-	widget->size.y = 0;
-	widget->maxSize = maxSize;
-	widget->parent = parent;
-	widget->children = array_create(2, sizeof(SUIWidget*));
-	widget->color.r = 255u;
-	widget->color.g = 255u;
-	widget->color.b = 255u;
-	widget->color.a = 255u;
-	widget->_renderRectangle.w = 0;
-	widget->_renderRectangle.h = 0;
-	widget->_renderRectangle.x = position.x;
-	widget->_renderRectangle.y = position.y;
-	widget->position = position;
-	widget->style = engine_malloc(sizeof(SStyle), ENGINE_MALLOC_AUTO);
-	widget->style->display = STYLE_DISPLAY_BLOCK;
-	widget->style->alignment = STYLE_DISPLAY_ALIGNMENT_LEFT_UP;
-	widget->style->gap = 0;
-	widget->style->padding = 0;
+SUIWidget *ui_create_widget(int hitTest, EUIWidgetType type, SStyle *style,
+                            SUIWidget *parent) {
+  SVec2i zVec2i = fmath_zero_vec2i();
+  SUIWidget *widget = engine_malloc(sizeof(SUIWidget), ENGINE_MALLOC_AUTO);
+  widget->isHitTestable = hitTest;
+  widget->visible = 1;
+  widget->type = type;
+  widget->size = zVec2i;
+  widget->position = zVec2i;
+  widget->maxSize = zVec2i;
+  widget->minSize = zVec2i;
+  widget->_renderRectangle.h = 0;
+  widget->_renderRectangle.w = 0;
+  widget->_renderRectangle.x = 0;
+  widget->_renderRectangle.y = 0;
+  widget->parent = parent;
+  widget->children = array_create(2, sizeof(SUIWidget *));
+  widget->color.r = 255u;
+  widget->color.g = 255u;
+  widget->color.b = 255u;
+  widget->color.a = 255u;
+  widget->style = style;
 
-	if(parent)
-	{
-		array_push_back(&widget, parent->children);
-	}
+  if (parent) {
+    array_push_back(&widget, parent->children);
+  }
 
-	return widget;
+  return widget;
 }
+
+void ui_set_widget_style(SUIWidget *src, SStyle *style) {}

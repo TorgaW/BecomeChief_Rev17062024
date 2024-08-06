@@ -4,6 +4,7 @@
 #include "../common/common.h"
 #include "../sprite/sprite.h"
 #include "../texture/texture.h"
+#include "SDL_mouse.h"
 #include "SDL_render.h"
 #include "SDL_stdinc.h"
 #include "darray/darray.h"
@@ -84,6 +85,9 @@ SEngineApp init_vulpecula_engine() {
 }
 
 void _read_input(SEngineApp *engineApp) {
+
+  SDL_GetMouseState(&(engineApp->mouse->x), &(engineApp->mouse->y));
+
   SDL_Event event;
 
   while (SDL_PollEvent(&event)) {

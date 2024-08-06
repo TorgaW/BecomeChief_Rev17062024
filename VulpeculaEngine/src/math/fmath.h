@@ -38,4 +38,6 @@ typedef struct SColorRGBA {
 	uint8_t r, g, b, a;
 } SColorRGBA;
 
+SVec2i fmath_zero_vec2i();
+
 #endif /* FMATH */

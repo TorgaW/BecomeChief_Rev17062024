@@ -1,27 +1,28 @@
 #ifndef STYLE
 #define STYLE
 
-typedef enum SStyleFlexDirection {
-  FLEX_DIRECTION_ROW,
-  FLEX_DIRECTION_COLUMN
-} SStyleFlexDirection;
+// typedef enum SStyleFlexDirection {
+//   FLEX_DIRECTION_ROW,
+//   FLEX_DIRECTION_COLUMN
+// } SStyleFlexDirection;
 
-typedef enum SStyleFlexJustify {
-  FLEX_JUSTIFY_START,
-  FLEX_JUSTIFY_END,
-  FLEX_JUSTIFY_CENTER
-} SStyleFlexJustify;
+// typedef enum SStyleFlexJustify {
+//   FLEX_JUSTIFY_START,
+//   FLEX_JUSTIFY_END,
+//   FLEX_JUSTIFY_CENTER
+// } SStyleFlexJustify;
 
-typedef enum SStyleFlexAlign {
-  FLEX_ALIGN_START,
-  FLEX_ALIGN_END,
-  FLEX_ALIGN_CENTER
-} SStyleFlexAlign;
+// typedef enum SStyleFlexAlign {
+//   FLEX_ALIGN_START,
+//   FLEX_ALIGN_END,
+//   FLEX_ALIGN_CENTER
+// } SStyleFlexAlign;
 
+//only 'display: block' supported for now
 typedef enum SStyleDisplay
 {
   STYLE_DISPLAY_BLOCK,
-  STYLE_DISPLAY_FLEX
+  // STYLE_DISPLAY_FLEX
 } SStyleDisplay;
 
 //alignment for children
@@ -39,12 +40,17 @@ typedef enum SStyleDisplayAlignment
 } SStyleDisplayAlignment;
 
 typedef struct SStyle {
+  //type of an alignment
   SStyleDisplay display;
   SStyleDisplayAlignment alignment;
-  SStyleFlexDirection flexDirection;
-  SStyleFlexJustify flexJustify;
-  SStyleFlexAlign flexAlign;
-  int gap;
+  //does element fill all free space
+  int fillWidth;
+  //does element fill all free space
+  int fillHeight;
+
+  // int gap;
+  
+  //padding for children elements
   int padding;
 } SStyle;
 
