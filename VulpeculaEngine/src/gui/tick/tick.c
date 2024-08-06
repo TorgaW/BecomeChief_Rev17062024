@@ -24,7 +24,7 @@ void _dfs_widgets(SUIWidget *root, SEngineApp *engineApp) {
   if (root == NULL) {
     return;
   }
-  
+
   int wWidth, wHeight;
   SDL_GetWindowSizeInPixels(engineApp->window, &wWidth, &wHeight);
   if (root->style->display == STYLE_DISPLAY_BLOCK) {
@@ -187,6 +187,7 @@ void _dfs_widgets_render(SUIWidget *root, SEngineApp *engineApp) {
   if (root == NULL) {
     return;
   }
+  if(root->visible < 1) return;
 
   for (int i = 0; i < root->children->size; i++) {
     _dfs_widgets_render(*array_get_at(root->children, SUIWidget *, i),

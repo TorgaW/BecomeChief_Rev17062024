@@ -38,7 +38,7 @@ void game_boot() {
   widget0->color.g = 0u;
   widget0->color.b = 0u;
   widget0->style->padding = 50;
-  widget0->style->alignment = STYLE_DISPLAY_ALIGNMENT_LEFT_DWN;
+  widget0->style->alignment = STYLE_DISPLAY_ALIGNMENT_MIDDLE_CEN;
   SUIWidget *widget1 =
       ui_create_widget(0, WIDGET_TYPE_CONTAINER, w_pos, w_max_size, widget0);
   widget1->color.r = 0u;
@@ -55,6 +55,7 @@ void game_boot() {
   widget2->color.b = 255u;
   widget2->size.x = 200;
   widget2->size.y = 300;
+  widget2->visible = 1;
   widget2->style->padding = 12;
   widget2->style->alignment = STYLE_DISPLAY_ALIGNMENT_RIGHT_DWN;
   SUIWidget *widget3 =

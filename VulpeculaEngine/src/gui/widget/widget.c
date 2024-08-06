@@ -9,6 +9,7 @@ SUIWidget* ui_create_widget(int hitTest, EUIWidgetType type, SVec2i position, SV
 {
 	SUIWidget* widget = engine_malloc(sizeof(SUIWidget), ENGINE_MALLOC_AUTO);
 	widget->isHitTestable = hitTest;
+	widget->visible = 1;
 	widget->type = type;
 	widget->size.x = 0;
 	widget->size.y = 0;
