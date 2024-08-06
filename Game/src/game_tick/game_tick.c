@@ -21,6 +21,7 @@ void game_tick(SEngineApp *engineApp) {
   /********* RENDERING UI LAYER */
 
   ui_tick(engineApp, *array_get_at(engineApp->uiPool, SUILayout *, 0));
+  ui_render(engineApp, *array_get_at(engineApp->uiPool, SUILayout *, 0));
 
   // int windowWidth, windowHeight;
   // SDL_GetWindowSizeInPixels(engineApp->window, &windowWidth, &windowHeight);

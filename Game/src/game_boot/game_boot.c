@@ -7,6 +7,7 @@
 #include "darray/darray.h"
 #include "engine/engine.h"
 #include "gui/layout/layout.h"
+#include "gui/style/style.h"
 #include "gui/widget/widget.h"
 #include "math/fmath.h"
 #include "math/frandom.h"
@@ -26,30 +27,44 @@ void game_boot() {
 
   engineApp.tickFunction = &game_tick;
 
-  SUILayout* layout0 = ui_create_layout(0);
+  SUILayout *layout0 = ui_create_layout(0);
   array_push_back(&layout0, engineApp.uiPool);
 
   SVec2i w_pos = {.x = 0, .y = 0};
   SVec2i w_max_size = {.x = 0, .y = 0};
-  SUIWidget* widget0 = ui_create_widget(0, WIDGET_TYPE_ROOT, w_pos, w_max_size, NULL);
+  SUIWidget *widget0 =
+      ui_create_widget(0, WIDGET_TYPE_ROOT, w_pos, w_max_size, NULL);
   widget0->color.r = 255u;
   widget0->color.g = 0u;
   widget0->color.b = 0u;
-  SUIWidget* widget1 = ui_create_widget(0, WIDGET_TYPE_CONTAINER, w_pos, w_max_size, widget0);
+  widget0->style->padding = 50;
+  widget0->style->alignment = STYLE_DISPLAY_ALIGNMENT_RIGHT_UP;
+  SUIWidget *widget1 =
+      ui_create_widget(0, WIDGET_TYPE_CONTAINER, w_pos, w_max_size, widget0);
   widget1->color.r = 0u;
   widget1->color.g = 255u;
   widget1->color.b = 0u;
-  SUIWidget* widget2 = ui_create_widget(0, WIDGET_TYPE_CONTAINER, w_pos, w_max_size, widget0);
+  widget1->size.x = 300;
+  widget1->size.y = 300;
+  widget1->style->padding = 25;
+  SUIWidget *widget2 =
+      ui_create_widget(0, WIDGET_TYPE_CONTAINER, w_pos, w_max_size, widget1);
   widget2->color.r = 0u;
   widget2->color.g = 0u;
   widget2->color.b = 255u;
-  SUIWidget* widget3 = ui_create_widget(0, WIDGET_TYPE_CONTAINER, w_pos, w_max_size, widget0);
+  widget2->size.x = 200;
+  widget2->size.y = 200;
+  widget2->style->padding = 12;
+  widget2->style->alignment = STYLE_DISPLAY_ALIGNMENT_MIDDLE_UP;
+  SUIWidget *widget3 =
+      ui_create_widget(0, WIDGET_TYPE_CONTAINER, w_pos, w_max_size, widget2);
   widget3->color.r = 255u;
   widget3->color.g = 255u;
   widget3->color.b = 0u;
-  // SUIWidget* widget4 = ui_create_widget(0, WIDGET_TYPE_CONTAINER, w_pos, w_max_size, widget0);
-  // widget4->color.r = 255u;
-  // widget4->color.g = 255u;
+  widget3->size.x = 100;
+  widget3->size.y = 100;
+  // SUIWidget* widget4 = ui_create_widget(0, WIDGET_TYPE_CONTAINER, w_pos,
+  // w_max_size, widget0); widget4->color.r = 255u; widget4->color.g = 255u;
   // widget4->color.b = 255u;
 
   array_push_back(&widget0, layout0->widgets);

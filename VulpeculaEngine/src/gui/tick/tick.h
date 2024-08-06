@@ -11,8 +11,11 @@
 
 
 void ui_tick(SEngineApp* engineApp, SUILayout* target);
-
 void _dfs_widgets(SUIWidget* root, SEngineApp *engineApp);
+
+void ui_render(SEngineApp *engineApp, SUILayout *target);
+void _dfs_widgets_render(SUIWidget* root, SEngineApp *engineApp);
+
 
 
 #endif /* TICK */

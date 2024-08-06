@@ -21,6 +21,8 @@ typedef enum EUIWidgetType
 typedef struct SUIWidget {
 	int isHitTestable;
 	EUIWidgetType type;
+	SVec2i size;
+	SVec2i position;
 	SVec2i maxSize; //x - max width, y - max height; 0,0 means infinite
 	SVec2i minSize; //x - min width, y - min height
 	struct SUIWidget* parent;

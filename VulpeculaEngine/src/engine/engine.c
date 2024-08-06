@@ -143,8 +143,8 @@ void loop_vulpecula_engine(SEngineApp *engineApp) {
     engineApp->framesDelta = (double)((tNow - tLast) * 1000 /
                                       (double)SDL_GetPerformanceFrequency()) *
                              0.001;
-    // printf("%f ms; %.4f fps;\n", engineApp->framesDelta * 1000.0, 1000.0 /
-    // (engineApp->framesDelta * 1000.0));
+    printf("%f ms; %.4f fps;\n", engineApp->framesDelta * 1000.0, 1000.0 /
+    (engineApp->framesDelta * 1000.0));
     _read_input(engineApp);
     camera_movement(engineApp);
     SDL_RenderClear(engineApp->renderer);
