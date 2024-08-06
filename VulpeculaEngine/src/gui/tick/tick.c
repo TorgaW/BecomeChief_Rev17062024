@@ -35,57 +35,8 @@ void _dfs_widgets(SUIWidget *root, SEngineApp *engineApp) {
       root->_renderRectangle.w = root->size.x;
       root->_renderRectangle.h = root->size.y;
 
-      switch (root->parent->style->alignment) {
-
-      case STYLE_DISPLAY_ALIGNMENT_LEFT_UP: {
-        root->_renderRectangle.x = root->parent->_renderRectangle.x +
-                                   root->position.x +
-                                   root->parent->style->padding;
-        root->_renderRectangle.y = root->parent->_renderRectangle.y +
-                                   root->position.y +
-                                   root->parent->style->padding;
-      } break;
-      case STYLE_DISPLAY_ALIGNMENT_MIDDLE_UP: {
-        root->_renderRectangle.x = root->parent->_renderRectangle.x +
-                                   root->parent->style->padding +
-                                   root->position.x +
-                                   (root->parent->_renderRectangle.w - root->parent->style->padding*2) / 2 -
-                                   root->size.x / 2;
-        root->_renderRectangle.y = root->parent->_renderRectangle.y +
-                                   root->position.y +
-                                   root->parent->style->padding;
-      } break;
-      case STYLE_DISPLAY_ALIGNMENT_RIGHT_UP: {
-        root->_renderRectangle.x = root->parent->_renderRectangle.x +
-                                   root->parent->style->padding +
-                                   root->position.x +
-                                   (root->parent->_renderRectangle.w - root->parent->style->padding*2) -
-                                   root->size.x;
-        root->_renderRectangle.y = root->parent->_renderRectangle.y +
-                                   root->position.y +
-                                   root->parent->style->padding;
-      } break;
-      case STYLE_DISPLAY_ALIGNMENT_LEFT_CEN: {
-
-      } break;
-      case STYLE_DISPLAY_ALIGNMENT_MIDDLE_CEN: {
-
-      } break;
-      case STYLE_DISPLAY_ALIGNMENT_RIGHT_CEN: {
-
-      } break;
-      case STYLE_DISPLAY_ALIGNMENT_LEFT_DWN: {
-
-      } break;
-      case STYLE_DISPLAY_ALIGNMENT_MIDDLE_DWN: {
-
-      } break;
-      case STYLE_DISPLAY_ALIGNMENT_RIGHT_DWN: {
-
-      } break;
-      }
-
-      //
+      _block_align_container(root);
+      
     } break;
     case WIDGET_TYPE_IMAGE: {
 
@@ -112,6 +63,110 @@ void _dfs_widgets(SUIWidget *root, SEngineApp *engineApp) {
       root->_renderRectangle.y = 0;
     } break;
     }
+  }
+}
+
+void _block_align_container(SUIWidget *src) {
+
+  switch (src->parent->style->alignment) {
+
+  case STYLE_DISPLAY_ALIGNMENT_LEFT_UP: {
+    src->_renderRectangle.x = src->parent->_renderRectangle.x +
+                               src->position.x + src->parent->style->padding;
+    src->_renderRectangle.y = src->parent->_renderRectangle.y +
+                               src->position.y + src->parent->style->padding;
+  } break;
+  case STYLE_DISPLAY_ALIGNMENT_MIDDLE_UP: {
+    src->_renderRectangle.x =
+        src->parent->_renderRectangle.x + src->parent->style->padding +
+        src->position.x +
+        (src->parent->_renderRectangle.w - src->parent->style->padding * 2) /
+            2 -
+        src->size.x / 2;
+    src->_renderRectangle.y = src->parent->_renderRectangle.y +
+                               src->position.y + src->parent->style->padding;
+  } break;
+  case STYLE_DISPLAY_ALIGNMENT_RIGHT_UP: {
+    src->_renderRectangle.x =
+        src->parent->_renderRectangle.x + src->parent->style->padding +
+        src->position.x +
+        (src->parent->_renderRectangle.w - src->parent->style->padding * 2) -
+        src->size.x;
+    src->_renderRectangle.y = src->parent->_renderRectangle.y +
+                               src->position.y + src->parent->style->padding;
+  } break;
+  case STYLE_DISPLAY_ALIGNMENT_LEFT_CEN: {
+    src->_renderRectangle.x = src->parent->_renderRectangle.x +
+                               src->position.x + src->parent->style->padding;
+    src->_renderRectangle.y =
+        src->parent->_renderRectangle.y + src->position.y +
+        src->parent->style->padding +
+        (src->parent->_renderRectangle.h - src->parent->style->padding * 2) /
+            2 -
+        src->size.y / 2;
+  } break;
+  case STYLE_DISPLAY_ALIGNMENT_MIDDLE_CEN: {
+    src->_renderRectangle.x =
+        src->parent->_renderRectangle.x + src->parent->style->padding +
+        src->position.x +
+        (src->parent->_renderRectangle.w - src->parent->style->padding * 2) /
+            2 -
+        src->size.x / 2;
+    src->_renderRectangle.y =
+        src->parent->_renderRectangle.y + src->position.y +
+        src->parent->style->padding +
+        (src->parent->_renderRectangle.h - src->parent->style->padding * 2) /
+            2 -
+        src->size.y / 2;
+  } break;
+  case STYLE_DISPLAY_ALIGNMENT_RIGHT_CEN: {
+    src->_renderRectangle.x =
+        src->parent->_renderRectangle.x + src->parent->style->padding +
+        src->position.x +
+        (src->parent->_renderRectangle.w - src->parent->style->padding * 2) -
+        src->size.x;
+    src->_renderRectangle.y =
+        src->parent->_renderRectangle.y + src->position.y +
+        src->parent->style->padding +
+        (src->parent->_renderRectangle.h - src->parent->style->padding * 2) /
+            2 -
+        src->size.y / 2;
+  } break;
+  case STYLE_DISPLAY_ALIGNMENT_LEFT_DWN: {
+    src->_renderRectangle.x = src->parent->_renderRectangle.x +
+                               src->position.x + src->parent->style->padding;
+    src->_renderRectangle.y =
+        src->parent->_renderRectangle.y + src->parent->style->padding +
+        src->position.y +
+        (src->parent->_renderRectangle.h - src->parent->style->padding * 2) -
+        src->size.y;
+
+  } break;
+  case STYLE_DISPLAY_ALIGNMENT_MIDDLE_DWN: {
+    src->_renderRectangle.x =
+        src->parent->_renderRectangle.x + src->parent->style->padding +
+        src->position.x +
+        (src->parent->_renderRectangle.w - src->parent->style->padding * 2) /
+            2 -
+        src->size.x / 2;
+    src->_renderRectangle.y =
+        src->parent->_renderRectangle.y + src->parent->style->padding +
+        src->position.y +
+        (src->parent->_renderRectangle.h - src->parent->style->padding * 2) -
+        src->size.y;
+  } break;
+  case STYLE_DISPLAY_ALIGNMENT_RIGHT_DWN: {
+    src->_renderRectangle.x =
+        src->parent->_renderRectangle.x + src->parent->style->padding +
+        src->position.x +
+        (src->parent->_renderRectangle.w - src->parent->style->padding * 2) -
+        src->size.x;
+    src->_renderRectangle.y =
+        src->parent->_renderRectangle.y + src->parent->style->padding +
+        src->position.y +
+        (src->parent->_renderRectangle.h - src->parent->style->padding * 2) -
+        src->size.y;
+  } break;
   }
 }
 
