@@ -69,6 +69,7 @@ void game_boot() {
   // widget4->color.b = 255u;
 
   array_push_back(&widget0, layout0->widgets);
+  layout0->_changed = 1;
 
   loop_vulpecula_engine(&engineApp);
 }

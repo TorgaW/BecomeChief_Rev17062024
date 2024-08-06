@@ -6,6 +6,7 @@
 typedef struct SUILayout {
 	SArray* widgets;
 	int zOrder;
+	int _changed;
 } SUILayout;
 
 SUILayout* ui_create_layout(int zOrder);

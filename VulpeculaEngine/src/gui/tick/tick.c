@@ -8,26 +8,25 @@
 // current style support state:
 // only 'display: block'
 void ui_tick(SEngineApp *engineApp, SUILayout *target) {
+  if (target->_changed == 0)
+    return;
 
   SUIWidget *currentWidget = NULL;
   for (int i = 0; i < target->widgets->size; i++) {
     currentWidget = *array_get_at(target->widgets, SUIWidget *, i);
     _dfs_widgets(currentWidget, engineApp);
   }
+
+  target->_changed = 0;
 }
 
 void _dfs_widgets(SUIWidget *root, SEngineApp *engineApp) {
   if (root == NULL) {
     return;
   }
-
-  for (int i = 0; i < root->children->size; i++) {
-    _dfs_widgets(*array_get_at(root->children, SUIWidget *, i), engineApp);
-  }
-
+  
   int wWidth, wHeight;
   SDL_GetWindowSizeInPixels(engineApp->window, &wWidth, &wHeight);
-
   if (root->style->display == STYLE_DISPLAY_BLOCK) {
 
     switch (root->type) {
@@ -36,7 +35,7 @@ void _dfs_widgets(SUIWidget *root, SEngineApp *engineApp) {
       root->_renderRectangle.h = root->size.y;
 
       _block_align_container(root);
-      
+
     } break;
     case WIDGET_TYPE_IMAGE: {
 
@@ -64,6 +63,10 @@ void _dfs_widgets(SUIWidget *root, SEngineApp *engineApp) {
     } break;
     }
   }
+
+  for (int i = 0; i < root->children->size; i++) {
+    _dfs_widgets(*array_get_at(root->children, SUIWidget *, i), engineApp);
+  }
 }
 
 void _block_align_container(SUIWidget *src) {
@@ -72,9 +75,9 @@ void _block_align_container(SUIWidget *src) {
 
   case STYLE_DISPLAY_ALIGNMENT_LEFT_UP: {
     src->_renderRectangle.x = src->parent->_renderRectangle.x +
-                               src->position.x + src->parent->style->padding;
+                              src->position.x + src->parent->style->padding;
     src->_renderRectangle.y = src->parent->_renderRectangle.y +
-                               src->position.y + src->parent->style->padding;
+                              src->position.y + src->parent->style->padding;
   } break;
   case STYLE_DISPLAY_ALIGNMENT_MIDDLE_UP: {
     src->_renderRectangle.x =
@@ -84,7 +87,7 @@ void _block_align_container(SUIWidget *src) {
             2 -
         src->size.x / 2;
     src->_renderRectangle.y = src->parent->_renderRectangle.y +
-                               src->position.y + src->parent->style->padding;
+                              src->position.y + src->parent->style->padding;
   } break;
   case STYLE_DISPLAY_ALIGNMENT_RIGHT_UP: {
     src->_renderRectangle.x =
@@ -93,11 +96,11 @@ void _block_align_container(SUIWidget *src) {
         (src->parent->_renderRectangle.w - src->parent->style->padding * 2) -
         src->size.x;
     src->_renderRectangle.y = src->parent->_renderRectangle.y +
-                               src->position.y + src->parent->style->padding;
+                              src->position.y + src->parent->style->padding;
   } break;
   case STYLE_DISPLAY_ALIGNMENT_LEFT_CEN: {
     src->_renderRectangle.x = src->parent->_renderRectangle.x +
-                               src->position.x + src->parent->style->padding;
+                              src->position.x + src->parent->style->padding;
     src->_renderRectangle.y =
         src->parent->_renderRectangle.y + src->position.y +
         src->parent->style->padding +
@@ -134,7 +137,7 @@ void _block_align_container(SUIWidget *src) {
   } break;
   case STYLE_DISPLAY_ALIGNMENT_LEFT_DWN: {
     src->_renderRectangle.x = src->parent->_renderRectangle.x +
-                               src->position.x + src->parent->style->padding;
+                              src->position.x + src->parent->style->padding;
     src->_renderRectangle.y =
         src->parent->_renderRectangle.y + src->parent->style->padding +
         src->position.y +
