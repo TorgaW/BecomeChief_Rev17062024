@@ -1,4 +1,0 @@
-/home/simon/Work/C++/BecomeChief_Rev17062024/VulpeculaEngine/build/CMakeFiles/VulpeculaEngine.dir
-/home/simon/Work/C++/BecomeChief_Rev17062024/VulpeculaEngine/build/CMakeFiles/copy_assets_engine.dir
-/home/simon/Work/C++/BecomeChief_Rev17062024/VulpeculaEngine/build/CMakeFiles/edit_cache.dir
-/home/simon/Work/C++/BecomeChief_Rev17062024/VulpeculaEngine/build/CMakeFiles/rebuild_cache.dir

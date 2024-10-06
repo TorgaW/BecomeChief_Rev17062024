@@ -1,28 +1,12 @@
-#ifndef ENGINE_CORE
-#define ENGINE_CORE
+#ifndef CORE
+#define CORE
 
+#include "../CoreMetrics/CoreMetrics.hpp"
+#include "ECS/SystemsManager/SystemsManager.hpp"
 #include <SDL2/SDL.h>
-
-#include <cstddef>
-#include <functional>
 
 #define DEFAULT_WINDOW_WIDTH 1920
 #define DEFAULT_WINDOW_HEIGHT 1080
-
-#define ENGINE_SIGNAL_INITIALIZED 0
-#define ENGINE_SIGNAL_LOOPING 1
-#define ENGINE_SIGNAL_EXIT 2
-
-struct EngineAppGraphics {
-  SDL_Renderer *renderer;
-  SDL_Window *window;
-};
-
-struct EngineAppMetrics {
-  size_t framesCount;
-  double framesDelta;
-  double framesPerSecond;
-};
 
 class EngineApp {
 public:
@@ -34,30 +18,26 @@ public:
   ~EngineApp();
 
   // inits engine before start working
-  bool Init();
+  static bool Init();
   // starts engine loop with custom function
-  void StartEngineLoop(std::function<void(EngineAppGraphics *)> updateFunc);
+  static void StartEngineLoop();
 
   // getter for 'graphics' variable
-  inline EngineAppGraphics *GetGraphics() { return &this->graphics; };
+  static inline EngineAppGraphics *GetGraphics() { return &graphics; };
 
   // getter for 'metrics' variable
-  inline EngineAppMetrics *GetMetrics() { return &this->metrics; };
+  static inline EngineAppMetrics *GetMetrics() { return &metrics; };
+
+  static inline ECSSystemsManager ecs_systems_manager;
 
 private:
   // graphics struct reference
-  EngineAppGraphics graphics{nullptr, nullptr};
+  static inline EngineAppGraphics graphics{nullptr, nullptr};
   // engine metrics
-  EngineAppMetrics metrics{0, 0, 0};
-
-  // ref to custom update function
-  std::function<void(EngineAppGraphics *)> side_updater;
-
-  // current engine signal
-  int engine_signal = -1;
+  static inline EngineAppMetrics metrics{0, 0, 0};
 
   // main loop function
-  void Loop();
+  static void Loop();
 };
 
-#endif /* ENGINE_CORE */
+#endif /* CORE */

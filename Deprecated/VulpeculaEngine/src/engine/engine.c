@@ -61,7 +61,7 @@ SEngineApp init_vulpecula_engine() {
   app.signal = ENGINE_SIGNAL_IDLE;
 
   app.objectPool = array_create(256, sizeof(SSprite));
-  app.uiPool = array_create(32, sizeof(SUILayout*));
+  app.uiPool = array_create(32, sizeof(SUILayout *));
   app.loadedTextures = init_loaded_textures_pool();
 
   app.framesCount = 0;
@@ -149,11 +149,10 @@ void loop_vulpecula_engine(SEngineApp *engineApp) {
                                       (double)SDL_GetPerformanceFrequency()) *
                              0.001;
     avgFrameDelta += engineApp->framesDelta;
-    if(engineApp->framesCount % 100 == 0)
-    {
-    printf("avg. in 100 frames: %f ms; %.1f fps;\n", avgFrameDelta * 10.0, (1000.0 /
-    (avgFrameDelta * 10.0)));
-    avgFrameDelta = 0.0;
+    if (engineApp->framesCount % 100 == 0) {
+      printf("avg. in 100 frames: %f ms; %.1f fps;\n", avgFrameDelta * 10.0,
+             (1000.0 / (avgFrameDelta * 10.0)));
+      avgFrameDelta = 0.0;
     }
     _read_input(engineApp);
     camera_movement(engineApp);

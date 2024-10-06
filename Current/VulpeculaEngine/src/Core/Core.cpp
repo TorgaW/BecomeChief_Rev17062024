@@ -1,4 +1,7 @@
 #include "Core.hpp"
+#include "SDL_render.h"
+#include "Systems/Input/InputSystem.hpp"
+#include "Systems/Rendering/Eraser/RenderingEraserSystem.hpp"
 
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
@@ -41,22 +44,29 @@ bool EngineApp::Init() {
 
   SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "1");
 
+  InputSystem *inputSystem = new InputSystem();
+  ecs_systems_manager.AddSystem(inputSystem);
+
+  RenderingEraserSystem *renderingErasingSystem = new RenderingEraserSystem();
+  ecs_systems_manager.AddSystem(renderingErasingSystem);
+
   return true;
 }
 
-void EngineApp::StartEngineLoop(std::function<void(EngineAppGraphics *)> updateFunc) {
-  side_updater = updateFunc;
-  engine_signal = ENGINE_SIGNAL_LOOPING;
+void EngineApp::StartEngineLoop() {
+  metrics.engine_signal = ENGINE_SIGNAL_RUNNING;
   Loop();
 }
 
 void EngineApp::Loop() {
   uint64_t tNow = SDL_GetPerformanceCounter();
   uint64_t tLast = 0;
-  while (engine_signal == ENGINE_SIGNAL_LOOPING) {
+  while (metrics.engine_signal == ENGINE_SIGNAL_RUNNING) {
     tLast = tNow;
     tNow = SDL_GetPerformanceCounter();
     metrics.framesDelta = (double)((tNow - tLast) * 1000 / (double)SDL_GetPerformanceFrequency()) * 0.001;
-    side_updater(&this->graphics);
+    metrics.framesPerSecond = 1 / metrics.framesDelta;
+    ecs_systems_manager.InvokeAllEnabled(&graphics, &metrics);
+    SDL_RenderPresent(graphics.renderer);
   }
 }
